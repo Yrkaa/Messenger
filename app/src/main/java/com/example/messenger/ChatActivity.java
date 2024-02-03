@@ -3,6 +3,7 @@ package com.example.messenger;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -17,6 +18,10 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+        //Получение доступа к памяти
+        SharedPreferences sharedPreferences = this.getSharedPreferences("com.example.messenger", MODE_PRIVATE);
+
         //Инициализация переменных для эл. разметки
         chatHeaderContainer = findViewById(R.id.chat_header_container);
         messagesList = findViewById(R.id.messages_list);
@@ -33,6 +38,15 @@ public class ChatActivity extends AppCompatActivity {
 
         //Помещение заголовка в контейнер
         fragmentTransaction.add(chatHeaderContainer.getId(), header);
+
+        //Заполнение уже существующими сообщениями
+        for(int i = 0; i < sharedPreferences.getInt(chatName+"-items", 0); i++){
+            MessageFragment msg = new MessageFragment(sharedPreferences.getString(chatName+"msg"+i, null));
+            if(msg!=null)
+                fragmentTransaction.add(messagesList.getId(),msg);
+        }
+
+        //Коммит всех изменений
         fragmentTransaction.commit();
     }
 }
