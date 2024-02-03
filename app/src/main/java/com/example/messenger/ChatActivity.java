@@ -5,11 +5,13 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 public class ChatActivity extends AppCompatActivity {
 
     //Создание переменных для эл. разметки
     FrameLayout chatHeaderContainer;
+    LinearLayout messagesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +19,7 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         //Инициализация переменных для эл. разметки
         chatHeaderContainer = findViewById(R.id.chat_header_container);
+        messagesList = findViewById(R.id.messages_list);
 
         //Получение названия и иконки чата
         String chatName = getIntent().getStringExtra("chat_name");
@@ -24,8 +27,11 @@ public class ChatActivity extends AppCompatActivity {
 
         //Создание заголовка чата
         ChatHeaderFragment header = new ChatHeaderFragment(chatLogoId, chatName);
-        //Помещение заголовка в контейнер
+
+        //Инициализация транзакции для вставки фрагментов в активити
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+
+        //Помещение заголовка в контейнер
         fragmentTransaction.add(chatHeaderContainer.getId(), header);
         fragmentTransaction.commit();
     }
