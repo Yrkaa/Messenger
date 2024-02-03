@@ -97,6 +97,8 @@ public class ChatPreviewFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 layout.setBackgroundColor(Color.parseColor("#77616161"));
+                Intent toChat = new Intent(getActivity(), ChatActivity.class);
+                startActivity(toChat);
             }
         });
 
