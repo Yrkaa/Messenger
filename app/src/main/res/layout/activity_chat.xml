@@ -10,6 +10,7 @@
         android:id="@+id/chat_header_container"
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:background="#4CAF50"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

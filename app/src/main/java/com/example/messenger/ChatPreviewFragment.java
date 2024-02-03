@@ -92,12 +92,14 @@ public class ChatPreviewFragment extends Fragment {
         chatLogo.setImageResource(chatLogoId);
         chatName.setText(chatNameText);
 
-        //Изменение цвета при нажатии
+        //Изменение цвета при нажатии и переход в чат
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 layout.setBackgroundColor(Color.parseColor("#77616161"));
                 Intent toChat = new Intent(getActivity(), ChatActivity.class);
+                toChat.putExtra("chat_name", chatNameText);
+                toChat.putExtra("chat_logo_id", chatLogoId);
                 startActivity(toChat);
             }
         });
