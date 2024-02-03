@@ -38,7 +38,7 @@
     </ScrollView>
 
     <EditText
-        android:id="@+id/user_message_et"
+        android:id="@+id/user_text_et"
         android:layout_width="340dp"
         android:layout_height="80dp"
         android:backgroundTint="#4CAF50"
@@ -53,6 +53,7 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <Button
+        android:id="@+id/send_message_btn"
         android:layout_width="60dp"
         android:layout_height="80dp"
         android:text=">"
@@ -61,6 +62,6 @@
         android:backgroundTint="#4CAF50"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/user_message_et" />
+        app:layout_constraintStart_toEndOf="@+id/user_text_et" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
