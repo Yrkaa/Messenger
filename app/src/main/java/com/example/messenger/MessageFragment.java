@@ -97,13 +97,25 @@ public class MessageFragment extends Fragment {
         messageText = view.findViewById(R.id.message_text_tv);
         messageDate = view.findViewById(R.id.message_date_tv);
 
-        //Получение текущей даты и времени
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            date = LocalDate.now();
-            time = LocalTime.now();
+        //Вызов функций для изменения переменных с датой и временем
+        getDate();
+        getTime();
+
+        //Заполнение данных
+        messageText.setText(text);
+        if(date != null && time != null){
+            messageDate.setText(hour+":"+min+","+day+" "+month);
         }
 
-        //Получение и преобразование нужных данных из date и time
+    }
+
+    private void getDate(){
+        //Получение текущей даты
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            date = LocalDate.now();
+        }
+
+        //Получение и преобразование нужных данных из date
         if (date != null){
             dateMassive = date.toString().split("-");
             day = dateMassive[2];
@@ -146,20 +158,20 @@ public class MessageFragment extends Fragment {
                     break;
             }
         }
+    }
 
+    private void getTime(){
+        //Получение текущего времени
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            time = LocalTime.now();
+        }
+
+        //Получение и преобразование нужных данных из time
         if(time != null){
             timeMassive = time.toString().split(":");
             hour = timeMassive[0];
             min = timeMassive[1];
         }
-
-
-        //Заполнение данных
-        messageText.setText(text);
-        if(date != null && time != null){
-            messageDate.setText(hour+":"+min+","+day+" "+month);
-        }
-
-
     }
+
 }
