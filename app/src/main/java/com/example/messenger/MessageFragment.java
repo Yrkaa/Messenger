@@ -11,6 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link MessageFragment#newInstance} factory method to
@@ -76,6 +79,16 @@ public class MessageFragment extends Fragment {
     //Переменные для эл. разметки
     TextView messageText, messageDate;
 
+    //Переменные для хранения данных о дате
+    LocalDate date = null;
+    LocalTime time = null;
+    String[] dateMassive = null;
+    String[] timeMassive = null;
+    String day = null;
+    String month = null;
+    String hour = null;
+    String min = null;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -84,8 +97,68 @@ public class MessageFragment extends Fragment {
         messageText = view.findViewById(R.id.message_text_tv);
         messageDate = view.findViewById(R.id.message_date_tv);
 
+        //Получение текущей даты и времени
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            date = LocalDate.now();
+            time = LocalTime.now();
+        }
+
+        //Получение и преобразование нужных данных из date и time
+        if (date != null){
+            dateMassive = date.toString().split("-");
+            day = dateMassive[2];
+            switch (dateMassive[1]){
+                case "01":
+                    month = "Янв";
+                    break;
+                case "02":
+                    month = "Фев";
+                    break;
+                case "03":
+                    month = "Мар";
+                    break;
+                case "04":
+                    month = "Апр";
+                    break;
+                case "05":
+                    month = "Май";
+                    break;
+                case "06":
+                    month = "Июнь";
+                    break;
+                case "07":
+                    month = "Июль";
+                    break;
+                case "08":
+                    month = "Авг";
+                    break;
+                case "09":
+                    month = "Сен";
+                    break;
+                case "10":
+                    month = "Окт";
+                    break;
+                case "11":
+                    month = "Ноя";
+                    break;
+                case "12":
+                    month = "Дек";
+                    break;
+            }
+        }
+
+        if(time != null){
+            timeMassive = time.toString().split(":");
+            hour = timeMassive[0];
+            min = timeMassive[1];
+        }
+
+
         //Заполнение данных
         messageText.setText(text);
+        if(date != null && time != null){
+            messageDate.setText(hour+":"+min+","+day+" "+month);
+        }
 
 
     }
