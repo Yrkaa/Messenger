@@ -53,7 +53,7 @@ public class ChatActivity extends AppCompatActivity {
             String msg = sharedPreferences.getString(chatName+"-msg-"+i, null);
             if(msg!=null){
                 FragmentTransaction msgTransaction = getSupportFragmentManager().beginTransaction();
-                msgTransaction.add(messagesList.getId(), new MessageFragment(msg));
+                msgTransaction.add(messagesList.getId(), new MessageFragment(msg,  i, chatName));
                 msgTransaction.commit();
             }
 
@@ -64,11 +64,6 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(userText.length() > 0){
-                    //Отображение нового сообщения
-                    MessageFragment newMsg = new MessageFragment(userText.getText().toString());
-                    FragmentTransaction newMsgTransaction = getSupportFragmentManager().beginTransaction();
-                    newMsgTransaction.add(messagesList.getId(), newMsg);
-                    newMsgTransaction.commit();
                     //Это код, чтобы убрать клаву
                     InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -77,6 +72,11 @@ public class ChatActivity extends AppCompatActivity {
                     sharedPreferences.edit().putString(chatName+"-msg-"+item, userText.getText().toString()).apply();
                     item+=1;
                     sharedPreferences.edit().putInt(chatName+"-items", item).apply();
+                    //Отображение нового сообщения
+                    MessageFragment newMsg = new MessageFragment(userText.getText().toString(), -1, chatName);
+                    FragmentTransaction newMsgTransaction = getSupportFragmentManager().beginTransaction();
+                    newMsgTransaction.add(messagesList.getId(), newMsg);
+                    newMsgTransaction.commit();
                     //Сбрасывание пользовательского текста
                     userText.setText("");
 

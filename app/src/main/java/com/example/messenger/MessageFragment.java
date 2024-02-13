@@ -1,5 +1,7 @@
 package com.example.messenger;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -69,12 +71,16 @@ public class MessageFragment extends Fragment {
     }
 
     //Конструктор для получения нужных данных
-    public MessageFragment(String text){
+    public MessageFragment(String text, int id, String chatName) {
         this.text = text;
+        this.id = id;
+        this.chatName = chatName;
     }
 
     //Переменные для хранения данных о сообщении
     String text;
+    int id;
+    String chatName;
 
     //Переменные для эл. разметки
     TextView messageText, messageDate;
@@ -89,9 +95,15 @@ public class MessageFragment extends Fragment {
     String hour = null;
     String min = null;
 
+    //Переменная для доступа к памяти
+    SharedPreferences preferences;
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        //Инициализация переменной для доступа к памяти
+        preferences = getActivity().getSharedPreferences("com.example.messenger", Context.MODE_PRIVATE);
 
         //Инициализация переменных для эл. разметки
         messageText = view.findViewById(R.id.message_text_tv);
@@ -103,75 +115,96 @@ public class MessageFragment extends Fragment {
 
         //Заполнение данных
         messageText.setText(text);
-        if(date != null && time != null){
-            messageDate.setText(hour+":"+min+","+day+" "+month);
-        }
-
+        messageDate.setText(hour + ":" + min + "," + day + " " + month);
     }
 
-    private void getDate(){
-        //Получение текущей даты
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            date = LocalDate.now();
-        }
+    private void getDate() {
+        if (id == -1) {
+            //Получение текущей даты
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                date = LocalDate.now();
+            }
 
-        //Получение и преобразование нужных данных из date
-        if (date != null){
-            dateMassive = date.toString().split("-");
-            day = dateMassive[2];
-            switch (dateMassive[1]){
-                case "01":
-                    month = "Янв";
-                    break;
-                case "02":
-                    month = "Фев";
-                    break;
-                case "03":
-                    month = "Мар";
-                    break;
-                case "04":
-                    month = "Апр";
-                    break;
-                case "05":
-                    month = "Май";
-                    break;
-                case "06":
-                    month = "Июнь";
-                    break;
-                case "07":
-                    month = "Июль";
-                    break;
-                case "08":
-                    month = "Авг";
-                    break;
-                case "09":
-                    month = "Сен";
-                    break;
-                case "10":
-                    month = "Окт";
-                    break;
-                case "11":
-                    month = "Ноя";
-                    break;
-                case "12":
-                    month = "Дек";
-                    break;
+            //Получение и преобразование нужных данных из date
+            if (date != null) {
+                dateMassive = date.toString().split("-");
+                day = dateMassive[2];
+                switch (dateMassive[1]) {
+                    case "01":
+                        month = "Янв";
+                        break;
+                    case "02":
+                        month = "Фев";
+                        break;
+                    case "03":
+                        month = "Мар";
+                        break;
+                    case "04":
+                        month = "Апр";
+                        break;
+                    case "05":
+                        month = "Май";
+                        break;
+                    case "06":
+                        month = "Июнь";
+                        break;
+                    case "07":
+                        month = "Июль";
+                        break;
+                    case "08":
+                        month = "Авг";
+                        break;
+                    case "09":
+                        month = "Сен";
+                        break;
+                    case "10":
+                        month = "Окт";
+                        break;
+                    case "11":
+                        month = "Ноя";
+                        break;
+                    case "12":
+                        month = "Дек";
+                        break;
+                }
+
+                //Сохранение даты в памяти
+                int newId = preferences.getInt(chatName + "-items", 0);
+                preferences.edit().putString(chatName + "-" + newId + "-date", month + "-" + day).apply();
+            }
+        } else {
+            String messageDateFromId = preferences.getString(chatName + "-" + (id+1) + "-date", null);
+            if (messageDateFromId != null) {
+                month = messageDateFromId.split("-")[0];
+                day = messageDateFromId.split("-")[1];
             }
         }
     }
 
-    private void getTime(){
-        //Получение текущего времени
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            time = LocalTime.now();
-        }
+    private void getTime() {
+        if (id == -1) {
+            //Получение текущего времени
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                time = LocalTime.now();
+            }
 
-        //Получение и преобразование нужных данных из time
-        if(time != null){
-            timeMassive = time.toString().split(":");
-            hour = timeMassive[0];
-            min = timeMassive[1];
+            //Получение и преобразование нужных данных из time
+            if (time != null) {
+                timeMassive = time.toString().split(":");
+                hour = timeMassive[0];
+                min = timeMassive[1];
+
+                //Сохранение времени в памяти
+                int newId = preferences.getInt(chatName + "-items", 0);
+                preferences.edit().putString(chatName + "-" + newId + "-time", hour + "-" + min).apply();
+            }
+        } else {
+            String messageTimeFromId = preferences.getString(chatName + "-" + (id+1) + "-time", null);
+            if (messageTimeFromId != null) {
+                hour = messageTimeFromId.split("-")[0];
+                min = messageTimeFromId.split("-")[1];
+            }
+
         }
     }
-
 }
