@@ -74,7 +74,7 @@ public class MessageFragment extends Fragment {
     String text;
 
     //Переменные для эл. разметки
-    TextView messageText;
+    TextView messageText, messageDate;
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -82,8 +82,11 @@ public class MessageFragment extends Fragment {
 
         //Инициализация переменных для эл. разметки
         messageText = view.findViewById(R.id.message_text_tv);
+        messageDate = view.findViewById(R.id.message_date_tv);
 
         //Заполнение данных
         messageText.setText(text);
+
+
     }
 }
