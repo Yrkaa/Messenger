@@ -17,7 +17,7 @@ import android.widget.TextView;
 public class ChatActivity extends AppCompatActivity {
 
     //Создание переменных для эл. разметки
-    FrameLayout chatHeaderContainer;
+    FrameLayout chatHeaderContainer, stickersListPlaceHolder;
     LinearLayout messagesList;
     Button sendMsg;
     EditText userText;
@@ -35,6 +35,7 @@ public class ChatActivity extends AppCompatActivity {
         messagesList = findViewById(R.id.messages_list);
         sendMsg = findViewById(R.id.send_message_btn);
         userText = findViewById(R.id.user_text_et);
+        stickersListPlaceHolder = findViewById(R.id.stickers_list_placeholder);
 
         //Получение названия и иконки чата
         String chatName = getIntent().getStringExtra("chat_name");
@@ -58,6 +59,11 @@ public class ChatActivity extends AppCompatActivity {
             }
 
         }
+
+        //Помещение списка стикеров в разметку
+        FragmentTransaction stickerListPlaceHolderTransaction = getSupportFragmentManager().beginTransaction();
+        stickerListPlaceHolderTransaction.add(stickersListPlaceHolder.getId(), new StickersListFragment());
+        stickerListPlaceHolderTransaction.commit();
 
         //Создание нового сообщения
         sendMsg.setOnClickListener(new View.OnClickListener() {
