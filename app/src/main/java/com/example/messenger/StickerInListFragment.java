@@ -16,10 +16,10 @@ import com.bumptech.glide.Glide;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link StickerFragment#newInstance} factory method to
+ * Use the {@link StickerInListFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class StickerFragment extends Fragment {
+public class StickerInListFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,7 +30,7 @@ public class StickerFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public StickerFragment() {
+    public StickerInListFragment() {
         // Required empty public constructor
     }
 
@@ -43,8 +43,8 @@ public class StickerFragment extends Fragment {
      * @return A new instance of fragment StickerFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static StickerFragment newInstance(String param1, String param2) {
-        StickerFragment fragment = new StickerFragment();
+    public static StickerInListFragment newInstance(String param1, String param2) {
+        StickerInListFragment fragment = new StickerInListFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -65,18 +65,20 @@ public class StickerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sticker, container, false);
+        return inflater.inflate(R.layout.fragment_sticker_in_list, container, false);
     }
 
-    //Переменная для хранения id стикера
+    //Переменные для хранения данных
     int id;
+    String chatName;
 
     //Переменная для эл. разметки
     ImageView stickerIV;
 
     //Конструктор для получения id стикера
-    public StickerFragment(int id){
+    public StickerInListFragment(int id, String chatName){
         this.id = id;
+        this.chatName = chatName;
     }
 
     @Override
@@ -94,7 +96,7 @@ public class StickerFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FragmentTransaction stickerChatTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                stickerChatTransaction.add(R.id.messages_list, new StickerFragment(id));
+                stickerChatTransaction.add(R.id.messages_list, new StickerInChatFragment(id, -1, chatName));
                 stickerChatTransaction.commit();
             }
         });

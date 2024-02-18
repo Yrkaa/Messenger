@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".StickerFragment">
+    tools:context=".StickerInChatFragment">
 
     <ImageView
-        android:id="@+id/sticker_iv"
-        android:layout_width="300px"
-        android:layout_height="300px"
-        android:layout_gravity="right"
-        android:layout_marginHorizontal="5dp"/>
+        android:id="@+id/sticker_in_chat_iv"
+        android:layout_width="800px"
+        android:layout_height="800px"
+        android:layout_marginHorizontal="7dp"
+        android:layout_gravity="right"/>
 
 </FrameLayout>

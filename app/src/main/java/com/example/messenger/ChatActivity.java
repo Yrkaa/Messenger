@@ -54,7 +54,12 @@ public class ChatActivity extends AppCompatActivity {
             String msg = sharedPreferences.getString(chatName+"-msg-"+i, null);
             if(msg!=null){
                 FragmentTransaction msgTransaction = getSupportFragmentManager().beginTransaction();
-                msgTransaction.add(messagesList.getId(), new MessageFragment(msg,  i, chatName));
+                if(msg.split("-")[0].equals("text")){
+                    msgTransaction.add(messagesList.getId(), new MessageFragment(msg.split("-")[1],  i, chatName));
+                }
+                else if(msg.split("-")[0].equals("sticker")){
+                    msgTransaction.add(messagesList.getId(), new StickerInChatFragment(Integer.parseInt(msg.split("-")[1]), i, chatName));
+                }
                 msgTransaction.commit();
             }
 
@@ -62,7 +67,7 @@ public class ChatActivity extends AppCompatActivity {
 
         //Помещение списка стикеров в разметку
         FragmentTransaction stickerListPlaceHolderTransaction = getSupportFragmentManager().beginTransaction();
-        stickerListPlaceHolderTransaction.add(stickersListPlaceHolder.getId(), new StickersListFragment());
+        stickerListPlaceHolderTransaction.add(stickersListPlaceHolder.getId(), new StickersListFragment(chatName));
         stickerListPlaceHolderTransaction.commit();
 
         //Создание нового сообщения
@@ -75,7 +80,7 @@ public class ChatActivity extends AppCompatActivity {
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     //Сохранение сообщения в памяти
                     int item = sharedPreferences.getInt(chatName+"-items", 0);
-                    sharedPreferences.edit().putString(chatName+"-msg-"+item, userText.getText().toString()).apply();
+                    sharedPreferences.edit().putString(chatName+"-msg-"+item, "text"+"-"+userText.getText().toString()).apply();
                     item+=1;
                     sharedPreferences.edit().putInt(chatName+"-items", item).apply();
                     //Отображение нового сообщения
