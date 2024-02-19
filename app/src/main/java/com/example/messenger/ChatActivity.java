@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class ChatActivity extends AppCompatActivity {
@@ -21,6 +22,7 @@ public class ChatActivity extends AppCompatActivity {
     LinearLayout messagesList;
     Button sendMsg;
     EditText userText;
+    ScrollView scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,15 @@ public class ChatActivity extends AppCompatActivity {
         sendMsg = findViewById(R.id.send_message_btn);
         userText = findViewById(R.id.user_text_et);
         stickersListPlaceHolder = findViewById(R.id.stickers_list_placeholder);
+        scrollView  = findViewById(R.id.messages_scroll);
+
+        //Автоматический скролл в конец переписки
+        scrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                scrollView.fullScroll(View.FOCUS_DOWN);
+            }
+        });
 
         //Получение названия и иконки чата
         String chatName = getIntent().getStringExtra("chat_name");
