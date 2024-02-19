@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -20,7 +21,7 @@ public class ChatActivity extends AppCompatActivity {
     //Создание переменных для эл. разметки
     FrameLayout chatHeaderContainer, stickersListPlaceHolder;
     LinearLayout messagesList;
-    Button sendMsg;
+    ImageButton sendMsg;
     EditText userText;
     ScrollView scrollView;
 

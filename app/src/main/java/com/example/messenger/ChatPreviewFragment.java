@@ -96,7 +96,7 @@ public class ChatPreviewFragment extends Fragment {
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                layout.setBackgroundColor(Color.parseColor("#77616161"));
+                layout.setBackgroundColor(Color.parseColor("#7E7E7E"));
                 Intent toChat = new Intent(getActivity(), ChatActivity.class);
                 toChat.putExtra("chat_name", chatNameText);
                 toChat.putExtra("chat_logo_id", chatLogoId);
@@ -110,6 +110,6 @@ public class ChatPreviewFragment extends Fragment {
     public void onResume() {
         super.onResume();
         //Возвращение цвета при выходе из чата
-        layout.setBackgroundColor(Color.parseColor("#00FFFFFF"));
+        layout.setBackgroundColor(Color.parseColor("#000000"));
     }
 }
