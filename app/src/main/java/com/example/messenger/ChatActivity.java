@@ -24,6 +24,7 @@ public class ChatActivity extends AppCompatActivity {
     ImageButton sendMsg;
     EditText userText;
     ScrollView scrollView;
+    Button showStickersList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,7 @@ public class ChatActivity extends AppCompatActivity {
         userText = findViewById(R.id.user_text_et);
         stickersListPlaceHolder = findViewById(R.id.stickers_list_placeholder);
         scrollView  = findViewById(R.id.messages_scroll);
+        showStickersList = findViewById(R.id.show_stickers_list_btn);
 
         //Автоматический скролл в конец переписки
         scrollView.post(new Runnable() {
@@ -82,27 +84,44 @@ public class ChatActivity extends AppCompatActivity {
         stickerListPlaceHolderTransaction.add(stickersListPlaceHolder.getId(), new StickersListFragment(chatName));
         stickerListPlaceHolderTransaction.commit();
 
+        //Скрытие/показ списка стикеров
+        showStickersList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(stickersListPlaceHolder.getVisibility() == View.INVISIBLE)
+                    stickersListPlaceHolder.setVisibility(View.VISIBLE);
+                else if(stickersListPlaceHolder.getVisibility() == View.VISIBLE)
+                    stickersListPlaceHolder.setVisibility(View.INVISIBLE);
+            }
+        });
+
         //Создание нового сообщения
         sendMsg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(userText.length() > 0){
+                if(userText.length() > 0) {
                     //Это код, чтобы убрать клаву
-                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     //Сохранение сообщения в памяти
-                    int item = sharedPreferences.getInt(chatName+"-items", 0);
-                    sharedPreferences.edit().putString(chatName+"-msg-"+item, "text"+"-"+userText.getText().toString()).apply();
-                    item+=1;
-                    sharedPreferences.edit().putInt(chatName+"-items", item).apply();
+                    int item = sharedPreferences.getInt(chatName + "-items", 0);
+                    sharedPreferences.edit().putString(chatName + "-msg-" + item, "text" + "-" + userText.getText().toString()).apply();
+                    item += 1;
+                    sharedPreferences.edit().putInt(chatName + "-items", item).apply();
                     //Отображение нового сообщения
                     MessageFragment newMsg = new MessageFragment(userText.getText().toString(), -1, chatName);
                     FragmentTransaction newMsgTransaction = getSupportFragmentManager().beginTransaction();
                     newMsgTransaction.add(messagesList.getId(), newMsg);
                     newMsgTransaction.commit();
+                    //Перемещение вниз
+                    scrollView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            scrollView.fullScroll(View.FOCUS_DOWN);
+                        }
+                    });
                     //Сбрасывание пользовательского текста
                     userText.setText("");
-
                 }
 
             }

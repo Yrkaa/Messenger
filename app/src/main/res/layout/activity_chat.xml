@@ -39,7 +39,7 @@
 
     <EditText
         android:id="@+id/user_text_et"
-        android:layout_width="340dp"
+        android:layout_width="280dp"
         android:layout_height="80dp"
         android:backgroundTint="#000"
         android:hint="Message"
@@ -56,16 +56,31 @@
         android:id="@+id/send_message_btn"
         android:layout_width="60dp"
         android:layout_height="80dp"
-        android:src="@drawable/send_message_button"
         android:backgroundTint="#4CAF50"
+        android:src="@drawable/send_message_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/user_text_et" />
+
+    <Button
+        android:id="@+id/show_stickers_list_btn"
+        android:layout_width="60dp"
+        android:layout_height="80dp"
+        android:text="*"
+        app:cornerRadius="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/send_message_btn"
+        app:layout_constraintEnd_toStartOf="@+id/send_message_btn"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/user_text_et"
+        app:layout_constraintTop_toTopOf="@+id/send_message_btn"
+        app:layout_constraintVertical_bias="1.0" />
 
     <FrameLayout
         android:id="@+id/stickers_list_placeholder"
         android:layout_width="match_parent"
         android:layout_height="300px"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
