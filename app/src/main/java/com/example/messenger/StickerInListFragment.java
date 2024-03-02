@@ -1,5 +1,7 @@
 package com.example.messenger;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -85,6 +87,8 @@ public class StickerInListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        SharedPreferences preferences = getContext().getSharedPreferences("com.example.messenger", Context.MODE_PRIVATE);
+
         //Инициализация переменной для эл. разметки
         stickerIV = view.findViewById(R.id.sticker_iv);
 
@@ -95,9 +99,10 @@ public class StickerInListFragment extends Fragment {
         stickerIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                FragmentTransaction stickerChatTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-                stickerChatTransaction.add(R.id.messages_list, new StickerInChatFragment(id, -1, chatName));
-                stickerChatTransaction.commit();
+                int item = preferences.getInt(chatName+"-items",0);
+                preferences.edit().putString(chatName+"-msg-"+item, "sticker"+"-"+id).apply();
+                item+=1;
+                preferences.edit().putInt(chatName+"-items", item).apply();
             }
         });
     }

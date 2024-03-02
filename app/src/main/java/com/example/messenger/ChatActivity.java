@@ -2,6 +2,7 @@ package com.example.messenger;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -16,14 +17,21 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 public class ChatActivity extends AppCompatActivity {
+
+    ArrayList<String> messagesData = new ArrayList<>();
+    ArrayList<Integer> idList = new ArrayList<>();
+
+    //Переменная-адаптер для чата
+    MessagesListAdapter messagesListAdapter;
 
     //Создание переменных для эл. разметки
     FrameLayout chatHeaderContainer, stickersListPlaceHolder;
-    LinearLayout messagesList;
+    RecyclerView messagesList;
     ImageButton sendMsg;
     EditText userText;
-    ScrollView scrollView;
     Button showStickersList;
 
     @Override
@@ -34,22 +42,16 @@ public class ChatActivity extends AppCompatActivity {
         //Получение доступа к памяти
         SharedPreferences sharedPreferences = this.getSharedPreferences("com.example.messenger", MODE_PRIVATE);
 
+
+
         //Инициализация переменных для эл. разметки
         chatHeaderContainer = findViewById(R.id.chat_header_container);
         messagesList = findViewById(R.id.messages_list);
         sendMsg = findViewById(R.id.send_message_btn);
         userText = findViewById(R.id.user_text_et);
         stickersListPlaceHolder = findViewById(R.id.stickers_list_placeholder);
-        scrollView  = findViewById(R.id.messages_scroll);
         showStickersList = findViewById(R.id.show_stickers_list_btn);
 
-        //Автоматический скролл в конец переписки
-        scrollView.post(new Runnable() {
-            @Override
-            public void run() {
-                scrollView.fullScroll(View.FOCUS_DOWN);
-            }
-        });
 
         //Получение названия и иконки чата
         String chatName = getIntent().getStringExtra("chat_name");
@@ -63,21 +65,18 @@ public class ChatActivity extends AppCompatActivity {
         headTransaction.add(chatHeaderContainer.getId(), header);
         headTransaction.commit();
 
-        //Заполнение уже существующими сообщениями
+        //Получение массива с уже существующими сообщениями и их id
         for(int i = 0; i < sharedPreferences.getInt(chatName+"-items", 0); i++){
             String msg = sharedPreferences.getString(chatName+"-msg-"+i, null);
             if(msg!=null){
-                FragmentTransaction msgTransaction = getSupportFragmentManager().beginTransaction();
-                if(msg.split("-")[0].equals("text")){
-                    msgTransaction.add(messagesList.getId(), new MessageFragment(msg.split("-")[1],  i, chatName));
-                }
-                else if(msg.split("-")[0].equals("sticker")){
-                    msgTransaction.add(messagesList.getId(), new StickerInChatFragment(Integer.parseInt(msg.split("-")[1]), i, chatName));
-                }
-                msgTransaction.commit();
+                messagesData.add(msg);
+                idList.add(i);
             }
-
         }
+        //Инициализация переменной-адаптора
+        messagesListAdapter = new MessagesListAdapter(this, messagesData, idList);
+        //Заполнение списка уже существующими сообщениями
+        messagesList.setAdapter(messagesListAdapter);
 
         //Помещение списка стикеров в разметку
         FragmentTransaction stickerListPlaceHolderTransaction = getSupportFragmentManager().beginTransaction();
@@ -109,17 +108,9 @@ public class ChatActivity extends AppCompatActivity {
                     item += 1;
                     sharedPreferences.edit().putInt(chatName + "-items", item).apply();
                     //Отображение нового сообщения
-                    MessageFragment newMsg = new MessageFragment(userText.getText().toString(), -1, chatName);
-                    FragmentTransaction newMsgTransaction = getSupportFragmentManager().beginTransaction();
-                    newMsgTransaction.add(messagesList.getId(), newMsg);
-                    newMsgTransaction.commit();
+                    messagesListAdapter.addMessage("text" + "-" + userText.getText().toString(), item);
                     //Перемещение вниз
-                    scrollView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            scrollView.fullScroll(View.FOCUS_DOWN);
-                        }
-                    });
+
                     //Сбрасывание пользовательского текста
                     userText.setText("");
                 }

@@ -73,7 +73,8 @@ public class StickerInChatFragment extends Fragment {
     ImageView stickerIV;
 
     //Переменные для хранения данных
-    int imageId, fragmentId;
+    int imageId;
+    int fragmentId;
     String chatName;
 
     public StickerInChatFragment(int imageId, int fragmentId, String chatName){
