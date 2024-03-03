@@ -22,7 +22,6 @@ import java.util.ArrayList;
 public class ChatActivity extends AppCompatActivity {
 
     ArrayList<String> messagesData = new ArrayList<>();
-    ArrayList<Integer> idList = new ArrayList<>();
 
     //Переменная-адаптер для чата
     MessagesListAdapter messagesListAdapter;
@@ -42,8 +41,6 @@ public class ChatActivity extends AppCompatActivity {
         //Получение доступа к памяти
         SharedPreferences sharedPreferences = this.getSharedPreferences("com.example.messenger", MODE_PRIVATE);
 
-
-
         //Инициализация переменных для эл. разметки
         chatHeaderContainer = findViewById(R.id.chat_header_container);
         messagesList = findViewById(R.id.messages_list);
@@ -51,7 +48,6 @@ public class ChatActivity extends AppCompatActivity {
         userText = findViewById(R.id.user_text_et);
         stickersListPlaceHolder = findViewById(R.id.stickers_list_placeholder);
         showStickersList = findViewById(R.id.show_stickers_list_btn);
-
 
         //Получение названия и иконки чата
         String chatName = getIntent().getStringExtra("chat_name");
@@ -70,17 +66,16 @@ public class ChatActivity extends AppCompatActivity {
             String msg = sharedPreferences.getString(chatName+"-msg-"+i, null);
             if(msg!=null){
                 messagesData.add(msg);
-                idList.add(i);
             }
         }
         //Инициализация переменной-адаптора
-        messagesListAdapter = new MessagesListAdapter(this, messagesData, idList);
+        messagesListAdapter = new MessagesListAdapter(this, messagesData);
         //Заполнение списка уже существующими сообщениями
         messagesList.setAdapter(messagesListAdapter);
 
         //Помещение списка стикеров в разметку
         FragmentTransaction stickerListPlaceHolderTransaction = getSupportFragmentManager().beginTransaction();
-        stickerListPlaceHolderTransaction.add(stickersListPlaceHolder.getId(), new StickersListFragment(chatName));
+        stickerListPlaceHolderTransaction.add(stickersListPlaceHolder.getId(), new StickersListFragment(chatName, messagesListAdapter));
         stickerListPlaceHolderTransaction.commit();
 
         //Скрытие/показ списка стикеров
@@ -108,7 +103,7 @@ public class ChatActivity extends AppCompatActivity {
                     item += 1;
                     sharedPreferences.edit().putInt(chatName + "-items", item).apply();
                     //Отображение нового сообщения
-                    messagesListAdapter.addMessage("text" + "-" + userText.getText().toString(), item);
+                    messagesListAdapter.addMessage("text" + "-" + userText.getText().toString());
                     //Перемещение вниз
 
                     //Сбрасывание пользовательского текста

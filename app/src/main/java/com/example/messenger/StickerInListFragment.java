@@ -16,6 +16,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link StickerInListFragment#newInstance} factory method to
@@ -77,10 +79,14 @@ public class StickerInListFragment extends Fragment {
     //Переменная для эл. разметки
     ImageView stickerIV;
 
+    //Информация для списка сообщений
+    MessagesListAdapter adapter;
+
     //Конструктор для получения id стикера
-    public StickerInListFragment(int id, String chatName){
+    public StickerInListFragment(int id, String chatName, MessagesListAdapter adapter){
         this.id = id;
         this.chatName = chatName;
+        this.adapter = adapter;
     }
 
     @Override
@@ -103,6 +109,8 @@ public class StickerInListFragment extends Fragment {
                 preferences.edit().putString(chatName+"-msg-"+item, "sticker"+"-"+id).apply();
                 item+=1;
                 preferences.edit().putInt(chatName+"-items", item).apply();
+                adapter.addMessage("sticker"+"-"+id);
+
             }
         });
     }

@@ -1,6 +1,5 @@
 package com.example.messenger;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,9 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -23,13 +19,11 @@ public class MessagesListAdapter extends RecyclerView.Adapter<MessagesListAdapte
 
     Context c;
     List<String> data;
-    List<Integer> idData;
     LayoutInflater inflater;
 
-    public void addMessage(String d, int id){
+    public void addMessage(String d){
         data.add(d);
-        idData.add(id);
-        notifyItemInserted(data.size());
+        notifyItemInserted(data.size()-1);
     }
 
     @NonNull
@@ -61,7 +55,6 @@ public class MessagesListAdapter extends RecyclerView.Adapter<MessagesListAdapte
     public static class ViewHolder extends RecyclerView.ViewHolder{
         public final ImageView sticker;
         public final TextView text;
-
         public final View v;
         public ViewHolder(View itemView){
             super(itemView);
@@ -71,10 +64,9 @@ public class MessagesListAdapter extends RecyclerView.Adapter<MessagesListAdapte
         }
     }
 
-    public MessagesListAdapter(Context c, List<String> data,  List<Integer> idData){
+    public MessagesListAdapter(Context c, List<String> data){
         this.c = c;
         this.inflater = LayoutInflater.from(c);
         this.data = data;
-        this.idData = idData;
     }
 }

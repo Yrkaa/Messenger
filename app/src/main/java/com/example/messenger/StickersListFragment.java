@@ -12,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link StickersListFragment#newInstance} factory method to
@@ -72,8 +74,12 @@ public class StickersListFragment extends Fragment {
     //Переменные для хранения данных
     String chatName;
 
-    public StickersListFragment(String chatName){
+    //Информация для списка сообщений
+    MessagesListAdapter adapter;
+
+    public StickersListFragment(String chatName, MessagesListAdapter adapter){
         this.chatName = chatName;
+        this.adapter = adapter;
     }
 
     @Override
@@ -86,7 +92,7 @@ public class StickersListFragment extends Fragment {
         for(int i = 0; i <= /*Это количество стикеров*/ 4; i++){
             int stickerId = getResources().getIdentifier("sticker"+i, "raw", "com.example.messenger");
             FragmentTransaction stickerListTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-            stickerListTransaction.add(list.getId(), new StickerInListFragment(stickerId, chatName));
+            stickerListTransaction.add(list.getId(), new StickerInListFragment(stickerId, chatName, adapter));
             stickerListTransaction.commit();
         }
 
