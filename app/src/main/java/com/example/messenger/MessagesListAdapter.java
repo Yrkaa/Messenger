@@ -40,10 +40,12 @@ public class MessagesListAdapter extends RecyclerView.Adapter<MessagesListAdapte
         if(msg.split("-")[0].equals("text")){
             holder.text.setText(msg.split("-")[1]);
             holder.text.setVisibility(View.VISIBLE);
+            holder.sticker.setVisibility(View.GONE);
         }
         else if(msg.split("-")[0].equals("sticker")){
             Glide.with(holder.v).load(Integer.parseInt(msg.split("-")[1])).into(holder.sticker);
             holder.sticker.setVisibility(View.VISIBLE);
+            holder.text.setVisibility(View.GONE);
         }
     }
 
