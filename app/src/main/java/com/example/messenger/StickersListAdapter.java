@@ -21,14 +21,16 @@ public class StickersListAdapter extends RecyclerView.Adapter<StickersListAdapte
     SharedPreferences preferences;
     String chatName;
     MessagesListAdapter msgAdapter;
+    RecyclerView msgList;
 
 
-    public StickersListAdapter(Context c, List<Integer> data, SharedPreferences preferences, String chatName, MessagesListAdapter msgAdapter){
+    public StickersListAdapter(Context c, List<Integer> data, SharedPreferences preferences, String chatName, MessagesListAdapter msgAdapter, RecyclerView msgList){
         this.inflater = LayoutInflater.from(c);
         this.data = data;
         this.preferences = preferences;
         this.chatName = chatName;
         this.msgAdapter = msgAdapter;
+        this.msgList = msgList;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
@@ -62,6 +64,8 @@ public class StickersListAdapter extends RecyclerView.Adapter<StickersListAdapte
                 item+=1;
                 preferences.edit().putInt(chatName+"-items", item).apply();
                 msgAdapter.addMessage("sticker"+"-"+id);
+
+                msgList.scrollToPosition(msgAdapter.data.size()-1);
             }
         });
     }

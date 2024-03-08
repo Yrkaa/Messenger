@@ -81,7 +81,7 @@ public class ChatActivity extends AppCompatActivity {
         //Заполнение id стикеров
         stickersData.addAll(Arrays.asList(R.raw.sticker0, R.raw.sticker1, R.raw.sticker2, R.raw.sticker3, R.raw.sticker4));
         //Инициализация переменной-адаптора
-        stickersListAdapter = new StickersListAdapter(this, stickersData, sharedPreferences, chatName, messagesListAdapter);
+        stickersListAdapter = new StickersListAdapter(this, stickersData, sharedPreferences, chatName, messagesListAdapter, messagesList);
         //Заполнение списка стикеров
         stickersList.setAdapter(stickersListAdapter);
 
@@ -112,7 +112,7 @@ public class ChatActivity extends AppCompatActivity {
                     //Отображение нового сообщения
                     messagesListAdapter.addMessage("text" + "-" + userText.getText().toString());
                     //Перемещение вниз
-
+                    messagesList.scrollToPosition(messagesListAdapter.data.size()-1);
                     //Сбрасывание пользовательского текста
                     userText.setText("");
                 }
