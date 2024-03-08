@@ -18,16 +18,21 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ChatActivity extends AppCompatActivity {
 
+    //Переменные для хранения информации
+    ArrayList<Integer> stickersData = new ArrayList<>();
     ArrayList<String> messagesData = new ArrayList<>();
 
-    //Переменная-адаптер для чата
+    //Переменные-адаптеры для чата
     MessagesListAdapter messagesListAdapter;
+    StickersListAdapter stickersListAdapter;
 
     //Создание переменных для эл. разметки
-    FrameLayout chatHeaderContainer, stickersListPlaceHolder;
+    FrameLayout chatHeaderContainer;
+    RecyclerView stickersList;
     RecyclerView messagesList;
     ImageButton sendMsg;
     EditText userText;
@@ -46,7 +51,7 @@ public class ChatActivity extends AppCompatActivity {
         messagesList = findViewById(R.id.messages_list);
         sendMsg = findViewById(R.id.send_message_btn);
         userText = findViewById(R.id.user_text_et);
-        stickersListPlaceHolder = findViewById(R.id.stickers_list_placeholder);
+        stickersList = findViewById(R.id.stickers_list_rv);
         showStickersList = findViewById(R.id.show_stickers_list_btn);
 
         //Получение названия и иконки чата
@@ -73,19 +78,21 @@ public class ChatActivity extends AppCompatActivity {
         //Заполнение списка уже существующими сообщениями
         messagesList.setAdapter(messagesListAdapter);
 
-        //Помещение списка стикеров в разметку
-        FragmentTransaction stickerListPlaceHolderTransaction = getSupportFragmentManager().beginTransaction();
-        stickerListPlaceHolderTransaction.add(stickersListPlaceHolder.getId(), new StickersListFragment(chatName, messagesListAdapter));
-        stickerListPlaceHolderTransaction.commit();
+        //Заполнение id стикеров
+        stickersData.addAll(Arrays.asList(R.raw.sticker0, R.raw.sticker1, R.raw.sticker2, R.raw.sticker3, R.raw.sticker4));
+        //Инициализация переменной-адаптора
+        stickersListAdapter = new StickersListAdapter(this, stickersData, sharedPreferences, chatName, messagesListAdapter);
+        //Заполнение списка стикеров
+        stickersList.setAdapter(stickersListAdapter);
 
         //Скрытие/показ списка стикеров
         showStickersList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(stickersListPlaceHolder.getVisibility() == View.INVISIBLE)
-                    stickersListPlaceHolder.setVisibility(View.VISIBLE);
-                else if(stickersListPlaceHolder.getVisibility() == View.VISIBLE)
-                    stickersListPlaceHolder.setVisibility(View.INVISIBLE);
+                if(stickersList.getVisibility() == View.INVISIBLE)
+                    stickersList.setVisibility(View.VISIBLE);
+                else if(stickersList.getVisibility() == View.VISIBLE)
+                    stickersList.setVisibility(View.INVISIBLE);
             }
         });
 

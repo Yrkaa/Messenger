@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="550dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="@+id/stickers_list_placeholder"
+        app:layout_constraintBottom_toBottomOf="@+id/stickers_list_rv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:stackFromEnd="true" />
@@ -42,7 +42,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.07"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/messages_scroll"
+        app:layout_constraintTop_toBottomOf="@+id/messages_list"
         app:layout_constraintVertical_bias="1.0" />
 
     <ImageButton
@@ -69,10 +69,13 @@
         app:layout_constraintTop_toTopOf="@+id/send_message_btn"
         app:layout_constraintVertical_bias="1.0" />
 
-    <FrameLayout
-        android:id="@+id/stickers_list_placeholder"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/stickers_list_rv"
         android:layout_width="match_parent"
         android:layout_height="300px"
+        android:background="#FFF"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="horizontal"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
