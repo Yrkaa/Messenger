@@ -25,6 +25,7 @@ public class ChatActivity extends AppCompatActivity {
     //Переменные для хранения информации
     ArrayList<Integer> stickersData = new ArrayList<>();
     ArrayList<String> messagesData = new ArrayList<>();
+    ArrayList<Integer> messagesIdData = new ArrayList<>();
 
     //Переменные-адаптеры для чата
     MessagesListAdapter messagesListAdapter;
@@ -71,10 +72,11 @@ public class ChatActivity extends AppCompatActivity {
             String msg = sharedPreferences.getString(chatName+"-msg-"+i, null);
             if(msg!=null){
                 messagesData.add(msg);
+                messagesIdData.add(i);
             }
         }
         //Инициализация переменной-адаптора
-        messagesListAdapter = new MessagesListAdapter(this, messagesData);
+        messagesListAdapter = new MessagesListAdapter(this, messagesData, messagesIdData, sharedPreferences, chatName);
         //Заполнение списка уже существующими сообщениями
         messagesList.setAdapter(messagesListAdapter);
 
@@ -116,7 +118,6 @@ public class ChatActivity extends AppCompatActivity {
                     //Сбрасывание пользовательского текста
                     userText.setText("");
                 }
-
             }
         });
 

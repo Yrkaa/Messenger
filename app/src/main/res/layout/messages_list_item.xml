@@ -11,7 +11,6 @@
             android:id="@+id/message_list_sticker"
             android:layout_width="600px"
             android:layout_height="600px"
-            android:layout_marginVertical="5dp"
             android:layout_gravity="right"
             android:visibility="gone"/>
         <TextView
@@ -19,10 +18,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
-            android:layout_marginVertical="5dp"
+            android:layout_marginHorizontal="3dp"
             android:textSize="25dp"
             android:background="#000000"
             android:visibility="gone"/>
+
     </FrameLayout>
+
+    <TextView
+        android:id="@+id/message_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00000"
+        android:textSize="18dp"
+        android:layout_marginHorizontal="3dp"
+        android:layout_gravity="right"
+        android:textColor="#000"
+        android:layout_marginBottom="10dp"/>
 </LinearLayout>
 
