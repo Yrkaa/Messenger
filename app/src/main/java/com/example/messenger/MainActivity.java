@@ -1,15 +1,24 @@
 package com.example.messenger;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import com.bumptech.glide.request.RequestOptions;
+
+import java.io.File;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Создание переменных для элементов разметки
     RecyclerView chatsList;
+    ImageView logo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,12 +41,16 @@ public class MainActivity extends AppCompatActivity {
 
         //Инициализация переменных для элементов разметки
         chatsList = findViewById(R.id.chats_list_rv);
+        logo = findViewById(R.id.main_user_logo);
 
         //Проверка на то, зарегвн пользователь или нет
-        if(preferences.getBoolean("isReg", false)==false){
+        if(preferences.getBoolean("isReg",false)==false){
             Intent toReg = new Intent(MainActivity.this, RegistrationActivity.class);
             startActivity(toReg);
         }
+
+        //Добавление иконки пользователя
+        Glide.with(this).load(Uri.parse(preferences.getString("userLogo",""))).into(logo);
 
         //Заполнение списков для хранения информации о чате
         chatNames.add("Избранное");

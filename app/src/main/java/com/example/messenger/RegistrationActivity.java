@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.Editable;
 import android.view.View;
 import android.widget.Button;
@@ -14,10 +17,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.File;
+
 public class RegistrationActivity extends AppCompatActivity {
 
     //Переменные с необходимой информацией
-    String logoData;
+    String logoData = null;
 
     //Создание переменных для элементов разметки
     Button reg;
@@ -41,7 +46,7 @@ public class RegistrationActivity extends AppCompatActivity {
         logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent getImage = new Intent(Intent.ACTION_GET_CONTENT);
+                Intent getImage = new Intent(Intent.ACTION_PICK);
                 getImage.setType("image/*");
                 startActivityForResult(getImage, 1);
             }
@@ -51,11 +56,11 @@ public class RegistrationActivity extends AppCompatActivity {
         reg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(false){
+                if(logoData == null){
                     Toast.makeText(RegistrationActivity.this, "Выберите иконку", Toast.LENGTH_LONG).show();
                 }
                 else if(name.getText().toString().length() == 0){
-                    Toast.makeText(RegistrationActivity.this, "Введите свой ник!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegistrationActivity.this, "Введите свой ник", Toast.LENGTH_LONG).show();
                 }
                 else{
                     preferences.edit().putBoolean("isReg", true).apply();
